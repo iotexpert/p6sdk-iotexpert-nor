@@ -31,7 +31,6 @@ bool iotexpert_nor_isBusy(iotexpert_nor_t *nor)
 cy_rslt_t iotexpert_nor_busyWait(iotexpert_nor_t *nor)
 {
     while(iotexpert_nor_isBusy(nor));
-    printf("done\n");
     return CY_RSLT_SUCCESS;
 }
 
@@ -43,7 +42,7 @@ cy_rslt_t iotexpert_nor_writeEnable(iotexpert_nor_t *nor)
 
 }
 
-cy_rslt_t iotexpert_nor_erase(iotexpert_nor_t *nor,iotexpert_nor_erase_commands_t type,uint32_t area)
+cy_rslt_t iotexpert_nor_eraseSync(iotexpert_nor_t *nor,iotexpert_nor_erase_commands_t type,uint32_t area)
 {
     cy_rslt_t result;
     result = iotexpert_nor_writeEnable(nor);
@@ -63,6 +62,8 @@ cy_rslt_t iotexpert_nor_erase(iotexpert_nor_t *nor,iotexpert_nor_erase_commands_
         break;
 
     }
+
+    iotexpert_nor_busyWait(nor);
 
     return result;
 }
@@ -114,6 +115,9 @@ cy_rslt_t iotexpert_nor_readSync(iotexpert_nor_t *nor,uint32_t address,uint8_t *
 
 cy_rslt_t iotexpert_nor_programPageSync(iotexpert_nor_t *nor,uint32_t address,uint8_t *buffer,size_t* length)
 {
+
+    // ARH: CY_ASSERT(doest over-run the page)
+    
     cy_rslt_t result;
     
     iotexpert_nor_writeEnable(nor);

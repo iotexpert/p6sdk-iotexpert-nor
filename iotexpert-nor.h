@@ -13,12 +13,20 @@ How do you handle?
 	what about non-uniform sectors?
 	advanced sector protection
 
+	fast read
+	rtos wait? - seamaphore - busyWait?
+
 	There is no efficent way to implement isBusy because you cant keep clocking..
+
+Todo:
+	device signature
+	manufactuere signature
+	quad enable (need to read about dual/octa)
+	sfdp
 */
 
 // Additions to the Cypress HAL //
 
-// Ryan we need double datarate
 typedef enum cyhal_qspi_datarate {
 	CYHAL_QSPI_CFG_DATARATE_UNKNOWN,
 	CYHAL_QSPI_CFG_DATARATE_SDR,
@@ -152,7 +160,7 @@ cy_rslt_t iotexpert_nor_selectBank(iotexpert_nor_t *nor,uint32_t bank);
  *****************************************************************************************************/
 
 
-cy_rslt_t iotexpert_nor_erase(iotexpert_nor_t *nor,iotexpert_nor_erase_commands_t type,uint32_t area);
+cy_rslt_t iotexpert_nor_eraseSync(iotexpert_nor_t *nor,iotexpert_nor_erase_commands_t type,uint32_t area);
 
 /******************************************************************************************************
  * 
